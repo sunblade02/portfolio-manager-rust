@@ -27,7 +27,35 @@ Coming soon... ⏳
 
 ## 📦 Installation
 
-Coming soon... ⏳
+### Requirements
+
+Make sure Docker is installed on your system.
+
+### Run the Rust development container
+
+```bash
+make dev-rust
+```
+
+### Build the Angular development container
+
+```bash
+make build-dev-angular
+```
+
+### Run the Angular development container
+
+```bash
+make dev-angular
+```
+
+### Start the Angular development server
+
+```bash
+make angular-serve
+```
+
+More coming soon... ⏳
 
 ## ⚙️ Configuration
 
