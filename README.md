@@ -49,10 +49,10 @@ make build-dev-angular
 make dev-angular
 ```
 
-### Start the Angular development server
+### Start the Angular and database development servers
 
 ```bash
-make angular-serve
+make serve-all
 ```
 
 More coming soon... ⏳
