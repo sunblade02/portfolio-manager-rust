@@ -1,2 +1,5 @@
+/backend/cert/*
+!/backend/cert/.gitkeep
+
 /data/*
 !/data/.gitkeep

@@ -29,30 +29,41 @@ Coming soon... ⏳
 
 ### Requirements
 
-Make sure Docker is installed on your system.
+- [Docker](https://www.docker.com/) must be installed on your system.
+- Make sure `make` are available as well.
 
-### Run the Rust development container
+### Launch the project in development environment
+
+#### 1. Generate SSL certificate for AXUM
 
 ```bash
-make dev-rust
+make gen-cert
 ```
 
-### Build the Angular development container
+#### 2. Build the Angular development container
 
 ```bash
 make build-dev-angular
 ```
 
-### Run the Angular development container
-
-```bash
-make dev-angular
-```
-
-### Start the Angular and database development servers
+#### 3. Start all development services
 
 ```bash
 make serve-all
+```
+
+### Run developemennt containers
+
+#### Run the Rust development container
+
+```bash
+make dev-rust
+```
+
+#### Run the Angular development container
+
+```bash
+make dev-angular
 ```
 
 More coming soon... ⏳
