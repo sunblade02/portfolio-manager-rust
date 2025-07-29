@@ -1,0 +1,13 @@
+@import "@fontsource/orbitron";
+
+.navbar-brand a {
+    font-family: orbitron;
+}
+
+.navbar-item.has-dropdown .navbar-dropdown {
+    display: none;
+}
+
+.navbar-item.has-dropdown.is-active .navbar-dropdown {
+    display: block;
+}
