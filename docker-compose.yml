@@ -1,0 +1,40 @@
+name: portfolio-manager-rust
+
+services:
+  db:
+    image: postgres:17.5
+    restart: on-failure:3
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-portfolio_manager}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-portfolio_manager}
+    volumes:
+      - ./data/db:/var/lib/postgresql/data:Z
+    ports:
+      - ${DB_PORT:-5432}:5432
+
+  rust:
+    image: rust
+    restart: on-failure:3
+    depends_on:
+    - db
+    volumes:
+      - ./backend:/app
+    ports:
+      - ${RUST_PORT:-3000}:3000
+    working_dir: /app
+    command: cargo run
+
+  angular:
+    build:
+      context: docker/angular
+    image: dev-angular
+    restart: on-failure:3
+    depends_on:
+    - rust
+    volumes:
+      - ./frontend:/app
+    ports:
+      - ${ANGULAR_PORT:-4200}:4200
+    working_dir: /app
+    command: ng serve --host 0.0.0.0
