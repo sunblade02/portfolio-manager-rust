@@ -40,19 +40,13 @@ Coming soon... ⏳
 make gen-cert
 ```
 
-#### 2. Build the Angular development container
+#### 2. Start all development services
 
 ```bash
-make build-dev-angular
+docker compose up -d
 ```
 
-#### 3. Start all development services
-
-```bash
-make serve-all
-```
-
-### Run developemennt containers
+### Run developement containers
 
 #### Run the Rust development container
 

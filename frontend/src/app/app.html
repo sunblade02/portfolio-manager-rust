@@ -4,7 +4,7 @@
             <a class="navbar-item" href="/">
                 Portfolio Manager
             </a>
-            <div class="navbar-burger js-burger" [class.is-active]="isMenuOpened" (click)="toggleMenu()" data-target="navbarExampleTransparentExample">
+            <div class="navbar-burger js-burger" [class.is-active]="isMenuOpened" (click)="toggleMenu()">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -12,7 +12,7 @@
             </div>
         </div>
 
-        <div id="navbarExampleTransparentExample" class="navbar-menu" [class.is-active]="isMenuOpened">
+        <div class="navbar-menu" [class.is-active]="isMenuOpened">
             <div class="navbar-start">
                 <a class="navbar-item" href="/"> <fa-icon [icon]="faHouse"></fa-icon> Home </a>
             </div>
