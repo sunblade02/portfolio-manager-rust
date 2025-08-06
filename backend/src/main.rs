@@ -1,10 +1,18 @@
 use axum_server::tls_rustls::RustlsConfig;
-use axum::{Router, routing::get};
+use dotenvy::dotenv;
+use std::error::Error;
 use std::net::SocketAddr;
+use portfolio_manager::{db, router};
 
 #[tokio::main]
-async fn main() {
-    let app = Router::new().route("/", get(|| async { "Home" }));
+async fn main() -> Result<(), Box<dyn Error>> {
+    dotenv().ok();
+
+    let pool = db::connect_db().await?;
+
+    let app = router::create_app(router::AppState {
+        db: pool,
+    });
 
     let tls_config = RustlsConfig::from_pem_file("cert/cert.pem", "cert/key.pem")
         .await.unwrap();
@@ -13,5 +21,7 @@ async fn main() {
 
     axum_server::bind_rustls(addr, tls_config)
         .serve(app.into_make_service())
-        .await.unwrap();
+        .await?;
+
+    Ok(())
 }

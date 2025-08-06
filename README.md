@@ -40,10 +40,22 @@ Coming soon... ⏳
 make gen-cert
 ```
 
-#### 2. Start all development services
+#### 2. Create the .env file in the backend directory
+
+```bash
+cp backend/.env.example backend/.env
+```
+
+#### 3. Start all development services
 
 ```bash
 docker compose up -d
+```
+
+### Build the Angular development container
+
+```bash
+make build-dev-angular
 ```
 
 ### Run developement containers
@@ -64,15 +76,70 @@ More coming soon... ⏳
 
 ## ⚙️ Configuration
 
-Coming soon... ⏳
+The .env file in the backend directory requires the following parameters :
+- DATABASE_URL : connection string to the database
+- JWT_SECRET : secret key used for generating of JWT tokens
 
 ## 📂 Project Structure
 
-Coming soon... ⏳
+/
+├── backend/                # Rust backend code
+|   ├── cert/               # TLS certificate for Axum
+|   ├── migrations/         # SQL migration scripts
+|   ├── src/                # Source code
+|   |   ├── bin/            # Executables (migration)
+|   |   ├── handlers/       # HTTP handlers
+|   |   ├── models/         # Database models
+|   |   ├── services/       # Services
+|   |   └── utils/          # Utility functions
+|   └── tests/              # Test code
+├── data/
+|   └── db/                 # Database data files
+├── docker/                 # Dockerfiles and related configurations
+└── frontend/               # Angular frontend code
+    ├── public/             # Static assets
+    └── src/                # Source code
+        ├── app/
+        |   ├── core/       # Core services
+        |   ├── features/   # Feature modules
+        |   └── shared/     # Shared components
+        └── environments/   # Environments configurations
 
 ## 🧪 Tests
 
-Coming soon... ⏳
+### Run all tests
+
+```bash
+make tests
+```
+
+### Run backend tests
+
+#### 1. Create the TEST database
+
+If necessary, stop any running containers :
+
+```bash
+docker compose down
+```
+
+Then :
+
+```bash
+make create-db-test
+```
+
+#### 2. Run Rust tests
+
+```bash
+make test-backend
+```
+
+### Run frontend tests
+
+```bash
+make test-frontend
+```
 
 ## 📄 License
 

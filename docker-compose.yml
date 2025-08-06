@@ -2,6 +2,7 @@ name: portfolio-manager-rust
 
 services:
   db:
+    container_name: portfolio-manager-rust_db
     image: postgres:17.5
     restart: on-failure:3
     environment:
@@ -14,6 +15,7 @@ services:
       - ${DB_PORT:-5432}:5432
 
   rust:
+    container_name: portfolio-manager-rust_rust
     image: rust
     restart: on-failure:3
     depends_on:
@@ -23,9 +25,12 @@ services:
     ports:
       - ${RUST_PORT:-3000}:3000
     working_dir: /app
-    command: cargo run
+    command: >
+      sh -c "cargo run --bin migrate --no-default-features --features migrate &&
+        cargo run --bin portfolio_manager"
 
   angular:
+    container_name: portfolio-manager-rust_angular
     build:
       context: docker/angular
     image: dev-angular
