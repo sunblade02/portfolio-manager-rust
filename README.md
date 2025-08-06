@@ -4,7 +4,8 @@ PortfolioManager is a lightweight web application for managing and tracking fina
 
 ## 🚀 Features
 
-Coming soon... ⏳
+### Authentication
+- [x] Sign in
 
 ## 🛠️ Technical Stack
 
