@@ -1,6 +1,6 @@
 # 🗺️ Roadmap - PortfolioManager (Rust)
 
-Last update : 07/18/2025
+Last update : 08/06/2025
 
 ## Version 1.0
 
