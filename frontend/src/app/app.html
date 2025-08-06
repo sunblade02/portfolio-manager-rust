@@ -1,52 +1,5 @@
-<header>
-    <nav class="navbar is-transparent">
-        <div class="navbar-brand">
-            <a class="navbar-item" href="/">
-                Portfolio Manager
-            </a>
-            <div class="navbar-burger js-burger" [class.is-active]="isMenuOpened" (click)="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-
-        <div class="navbar-menu" [class.is-active]="isMenuOpened">
-            <div class="navbar-start">
-                <a class="navbar-item" href="/"> <fa-icon [icon]="faHouse"></fa-icon> Home </a>
-            </div>
-
-            <div class="navbar-end">
-                <div class="navbar-item has-dropdown" [class.is-active]="isThemeMenuOpened">
-                    <a class="navbar-link is-arrowless" (click)="toggleThemeMenu()">
-                        <fa-icon [icon]="themeIcon"></fa-icon>
-                    </a>
-
-                    <div class="navbar-dropdown is-right">
-                        <a class="navbar-item" (click)="setTheme('light')">
-                            <fa-icon [icon]="faSun"></fa-icon> Light
-                        </a>
-                        <a class="navbar-item" (click)="setTheme('dark')">
-                            <fa-icon [icon]="faMoon"></fa-icon> Dark
-                        </a>
-                        <a class="navbar-item" (click)="setTheme('system')">
-                            <fa-icon [icon]="faDesktop"></fa-icon> System
-                        </a>
-                    </div>
-                </div>
-                
-                <div class="navbar-item">
-                    <div class="buttons">
-                        <a class="button is-primary">
-                            <strong>Sign up</strong>
-                        </a>
-                        <a class="button is-light">
-                            Log in
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-</header>
+<app-header></app-header>
+<main>
+    <router-outlet></router-outlet>
+</main>
+<app-footer></app-footer>

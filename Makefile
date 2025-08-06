@@ -1,30 +1,41 @@
 # 🛠️ Development
 
 dev-rust:
-	docker run --rm -v $(PWD)/backend:/app -w /app --user 1000:1000 -it rust
+	docker run --rm --network portfolio-manager-rust_default -v $(PWD)/backend:/app -w /app --user 1000:1000 -it rust
 
 gen-cert:
 	docker run --rm -v $(PWD)/backend:/app -w /app/cert --user 1000:1000 rust \
 		openssl req -x509 -newkey rsa:4096 -nodes -sha256 -keyout key.pem -out cert.pem -days 365 \
 		-subj "/CN=localhost"
 
-rust-serve:
-	docker run -d --rm -p 3000:3000 -v $(PWD)/backend:/app -w /app --name rust-container rust cargo run
-
 dev-angular:
 	docker run --rm -v $(PWD)/frontend:/app -w /app --user 1000:1000 -it angular sh
 
-angular-serve:
-	docker run -d --rm -p 4200:4200 -v $(PWD)/frontend:/app -w /app --name angular-container dev-angular ng serve --host 0.0.0.0
+migrate-db:
+	docker run --rm --network portfolio-manager-rust_default -v $(PWD)/backend:/app -w /app rust cargo run --bin migrate --no-default-features --features migrate
 
-db-serve:
-	docker run -d --rm -p 5432:5432 \
-		--env POSTGRES_USER=portfolio_manager \
-		--env POSTGRES_PASSWORD=password \
-		--env POSTGRES_DB=portfolio_manager \
-		-v $(PWD)/data/db:/var/lib/postgresql/data:Z --name postgres-container postgres:17.5
+# 🧪 Test
 
-serve-all: db-serve rust-serve angular-serve
+create-db-test:
+	docker run --rm -v $(PWD)/data/db:/var/lib/postgresql/data:Z -u postgres postgres:17.5 bash -c "\
+		pg_ctl -D /var/lib/postgresql/data start && \
+		until pg_isready -h localhost; do sleep 1; done; \
+		psql -U portfolio_manager -c 'CREATE DATABASE portfolio_manager_test;'"
+
+test-backend:
+	docker compose up -d
+	docker run --rm --network portfolio-manager-rust_default -v $(PWD)/backend:/app -w /app rust bash -c "\
+		cargo run --bin migrate --no-default-features --features migrate test && \
+		cargo test -- --test-threads=1"
+
+test-frontend:
+	docker run --rm -v $(PWD)/frontend:/app -w /app angular ng test --watch=false
+
+tests: 
+	docker compose down
+	-@make create-db-test
+	@make test-backend 
+	@make test-frontend
 
 # 🐳 Docker
 

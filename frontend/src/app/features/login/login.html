@@ -1,0 +1,47 @@
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="#">Home</a></li>
+    <li><a aria-current="page">Log in</a></li>
+  </ul>
+</nav>
+
+<h1 class="title">Log in</h1>
+
+<div class="columns is-centered">
+    <div class="column is-half is-full-mobile">
+        @if (errorMessage) {
+            <div class="notification is-danger">
+                <button class="delete"></button>
+                {{ errorMessage }}
+            </div>
+        }
+
+        <form (ngSubmit)="onSubmit()">
+            <div class="field">
+                <label class="label">Email</label>
+                <div class="control has-icons-left">
+                    <input [(ngModel)]="email" name="email" class="input" type="email" placeholder="Email input">
+                    <span class="icon is-small is-left">
+                        <fa-icon [icon]="faEnvelope"></fa-icon>
+                    </span>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Password</label>
+                <div class="control has-icons-left">
+                    <input [(ngModel)]="password" name="password" class="input" type="password" placeholder="Password">
+                    <span class="icon is-small is-left">
+                    <fa-icon [icon]="faLock"></fa-icon>
+                    </span>
+                </div>
+            </div>
+            <div class="field">
+                <p class="control">
+                    <button class="button is-success">
+                    Log in
+                    </button>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
