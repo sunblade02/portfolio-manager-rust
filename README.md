@@ -82,6 +82,7 @@ The .env file in the backend directory requires the following parameters :
 
 ## 📂 Project Structure
 
+```
 /
 ├── backend/                # Rust backend code
 |   ├── cert/               # TLS certificate for Axum
@@ -104,6 +105,7 @@ The .env file in the backend directory requires the following parameters :
         |   ├── features/   # Feature modules
         |   └── shared/     # Shared components
         └── environments/   # Environments configurations
+```
 
 ## 🧪 Tests
 

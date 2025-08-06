@@ -6,7 +6,7 @@ Last update : 07/18/2025
 
 ### Authentication
 - [ ] Sign up
-- [ ] Sign-in
+- [x] Sign in
 
 ### Transaction
 - [ ] Add transaction (token ticker, amount of tokens, value in USD)
