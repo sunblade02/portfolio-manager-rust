@@ -4,6 +4,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../core/auth/auth-service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-login',
@@ -19,9 +20,11 @@ export class Login implements OnInit {
   password = '';
   errorMessage = '';
 
-  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) {}
+  constructor(private titleService: Title, private authService: AuthService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    this.titleService.setTitle('Log in - Portfolio Manager');
+
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['']);
       return;
@@ -34,7 +37,7 @@ export class Login implements OnInit {
         this.router.navigate(['']);
       },
       error: () => {
-        this.errorMessage = 'Authentication failed. Please check your credentials.';
+        this.errorMessage = 'Invalid credentials.';
       }
     });
   }

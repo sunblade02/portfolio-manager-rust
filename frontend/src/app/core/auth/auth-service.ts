@@ -34,7 +34,7 @@ export class AuthService {
     const decoded = this.decodeToken();
     if (!decoded?.exp) return true;
 
-    const now = Math.floor(Date.now() / 1000); // en secondes
+    const now = Math.floor(Date.now() / 1000);
     return decoded.exp < now;
   }
 
@@ -53,7 +53,6 @@ export class AuthService {
     try {
       return jwtDecode<JwtPayload>(token);
     } catch (e) {
-      console.error('Erreur de décodage du token :', e);
       return null;
     }
   }

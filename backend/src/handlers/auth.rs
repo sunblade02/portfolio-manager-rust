@@ -10,7 +10,7 @@ pub async fn login(State(state): State<router::AppState>, Json(payload): Json<mo
     match services::auth::auth(&state.db, &payload.email, &payload.password).await {
         Ok(_) => match utils::jwt::create_token(&payload.email) {
             Ok(token) => Json(token).into_response(),
-            Err(_) => (StatusCode::UNAUTHORIZED, "Invalid credentials".to_string()).into_response(),
+            Err(_) => (StatusCode::UNAUTHORIZED, "Invalid credentials.".to_string()).into_response(),
         },
         Err(msg) => (StatusCode::UNAUTHORIZED, msg.to_string()).into_response(),
     }

@@ -5,7 +5,7 @@ PortfolioManager is a lightweight web application for managing and tracking fina
 ## 🚀 Features
 
 ### Authentication
-- [x] Sign in
+- Sign in
 
 ## 🛠️ Technical Stack
 
@@ -98,6 +98,7 @@ The .env file in the backend directory requires the following parameters :
 ├── data/
 |   └── db/                 # Database data files
 ├── docker/                 # Dockerfiles and related configurations
+├── docs/                   # Resources for the documentation
 └── frontend/               # Angular frontend code
     ├── public/             # Static assets
     └── src/                # Source code

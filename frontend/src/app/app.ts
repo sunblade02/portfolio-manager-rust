@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Header } from './shared/components/header/header';
 import { Footer } from './shared/components/footer/footer';
@@ -14,5 +14,4 @@ import { Footer } from './shared/components/footer/footer';
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('portfolio-manager-frontend');
 }

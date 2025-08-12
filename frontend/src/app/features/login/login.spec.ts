@@ -28,6 +28,9 @@ describe('Login', () => {
   });
 
   it('should render title', () => {
+    const title = document.title;
+    expect(title).toBe('Log in - Portfolio Manager');
+
     const fixture = TestBed.createComponent(Login);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
