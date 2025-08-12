@@ -17,6 +17,7 @@ migrate-db:
 # 🧪 Test
 
 create-db-test:
+	docker compose down
 	docker run --rm -v $(PWD)/data/db:/var/lib/postgresql/data:Z -u postgres postgres:17.5 bash -c "\
 		pg_ctl -D /var/lib/postgresql/data start && \
 		until pg_isready -h localhost; do sleep 1; done; \
@@ -31,8 +32,7 @@ test-backend:
 test-frontend:
 	docker run --rm -v $(PWD)/frontend:/app -w /app angular ng test --watch=false
 
-tests: 
-	docker compose down
+tests:
 	-@make create-db-test
 	@make test-backend 
 	@make test-frontend

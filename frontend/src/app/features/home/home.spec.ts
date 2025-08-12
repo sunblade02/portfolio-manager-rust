@@ -20,4 +20,9 @@ describe('Home', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
+  it('should render title', () => {
+    const title = document.title;
+    expect(title).toBe('Home - Portfolio Manager');
+  });
 });
