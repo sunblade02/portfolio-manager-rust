@@ -1,9 +1,10 @@
 use sqlx::{Error, PgPool};
+use crate::models;
 
-pub async fn get_password_by_email(db: &PgPool, email: &String) -> Result<String, Error> {
+pub async fn find_by_email(db: &PgPool, email: &String) -> Result<models::user::User, Error> {
     let row = sqlx::query!(
             r#"
-            SELECT password
+            SELECT id, email, password
             FROM "user"
             WHERE email=$1
             "#,
@@ -11,5 +12,9 @@ pub async fn get_password_by_email(db: &PgPool, email: &String) -> Result<String
         ).fetch_one(db)
         .await?;
 
-    Ok(row.password)
+    Ok(models::user::User {
+        id: row.id.to_string(),
+        email: row.email,
+        password: row.password,
+    })
 }
