@@ -2,11 +2,16 @@ use axum_server::tls_rustls::RustlsConfig;
 use dotenvy::dotenv;
 use std::error::Error;
 use std::net::SocketAddr;
-use portfolio_manager::{db, router};
+use portfolio_manager::{db, log, router};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     dotenv().ok();
+
+    #[cfg(not(test))]
+    log::setup_logging().await?;
+    #[cfg(not(test))]
+    log::start_log_flusher().await?;
 
     let pool = db::connect_db().await?;
 

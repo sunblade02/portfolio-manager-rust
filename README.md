@@ -11,7 +11,7 @@ PortfolioManager is a lightweight web application for managing and tracking fina
 
 - Frontend : Angular  
 - Backend : Rust (AXUM)  
-- Database : PostgreSQL  
+- Database : PostgreSQL (application data) + Redis (temporary log storage) + MongoDB (persistent log storage)
 - Deployment : Docker + Kubernetes
 
 ## 🗺️ Roadmap
@@ -79,6 +79,8 @@ More coming soon... ⏳
 
 The .env file in the backend directory requires the following parameters :
 - DATABASE_URL : connection string to the database
+- MONGODB_URL : connection string to the MongoDB database (for logging)
+- REDIS_URL : connection string to the Redis database (for logging)
 - JWT_SECRET : secret key used for generating of JWT tokens
 
 ## 📂 Project Structure
@@ -96,7 +98,9 @@ The .env file in the backend directory requires the following parameters :
 |   |   └── utils/          # Utility functions
 |   └── tests/              # Test code
 ├── data/
-|   └── db/                 # Database data files
+|   ├── db/                 # Database data files
+|   ├── mongo/              # MongoDB data files (persistent log storage)
+|   └── redis/              # Redis data files (temporary log storage)
 ├── docker/                 # Dockerfiles and related configurations
 ├── docs/                   # Resources for the documentation
 └── frontend/               # Angular frontend code
