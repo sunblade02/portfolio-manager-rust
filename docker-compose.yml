@@ -63,7 +63,7 @@ services:
       - ${RUST_PORT:-3000}:3000
     working_dir: /app
     command: >
-      sh -c "cargo run --bin migrate --no-default-features --features migrate &&
+      sh -c "cargo run --bin migrate &&
         cargo run --bin portfolio_manager"
 
   angular:
@@ -80,3 +80,15 @@ services:
       - ${ANGULAR_PORT:-4200}:4200
     working_dir: /app
     command: ng serve --host 0.0.0.0
+
+  log-worker:
+    image: rust
+    container_name: portfolio-manager-rust_log-worker
+    restart: on-failure:3
+    depends_on:
+      - redis
+      - mongo
+    volumes:
+      - ./backend:/app
+    working_dir: /app
+    command: cargo run --bin log_worker
