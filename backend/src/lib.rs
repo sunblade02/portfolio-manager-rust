@@ -1,14 +1,7 @@
-#[cfg(not(feature = "migrate"))]
 pub mod db;
-#[cfg(not(feature = "migrate"))]
 pub mod handlers;
-#[cfg(not(feature = "migrate"))]
 pub mod log;
-#[cfg(not(feature = "migrate"))]
 pub mod models;
-#[cfg(not(feature = "migrate"))]
 pub mod router;
-#[cfg(not(feature = "migrate"))]
 pub mod services;
-#[cfg(not(feature = "migrate"))]
 pub mod utils;

@@ -1,4 +1,4 @@
-use chrono::Utc;
+use chrono::{Local, Utc};
 use mongodb::{options::ClientOptions, Client as MongoClient, bson::doc};
 use tokio::{sync::Mutex, time::{interval, Duration}};
 use tracing::{Event, Subscriber, field::{Field, Visit}};
@@ -97,55 +97,59 @@ pub async fn setup_logging() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-pub async fn start_log_flusher() -> Result<(), Box<dyn Error>> {
+pub async fn start_log_flusher() {
     let mongodb_url =  env::var("MONGODB_URL")
-        .map_err(|_| "MONGODB_URL must be set")?;
+        .expect("MONGODB_URL must be set");
 
     let mongo_client = MongoClient::with_options(
-        ClientOptions::parse(mongodb_url).await?
-    )?;
-    let collection = mongo_client.database("portfolio_manager").collection("logs");
+        ClientOptions::parse(mongodb_url).await.expect("Failed to parse MONGODB_URL")
+    ).expect("Failed to create Mongo client");
 
-    let mut redis_conn = get_redis_conn().await?;
+    let collection: mongodb::Collection<LogEntry> = mongo_client.database("portfolio_manager").collection("logs");
+
+    let mut redis_conn = get_redis_conn().await.expect("Failed to connect to Redis");
 
     let mut ticker = interval(Duration::from_secs(60));
 
-    tokio::spawn(async move {
-        loop {
-            ticker.tick().await;
+    println!("Worker started. Waiting for logs...");
 
-            // Get logs from Redis database
-            let logs: Vec<String> = redis_conn.lrange("logs", 0, -1).await.unwrap_or_default();
-            if logs.is_empty() {
-                continue;
-            }
+    loop {
+        ticker.tick().await;
 
-            // Remove logs from Redis database
-            if let Err(e) = redis_conn.del::<_, ()>("logs").await {
-                eprintln!("Error deleting from Redis: {:?}", e);
-            }
+        // Get logs from Redis database
+        let logs: Vec<String> = redis_conn.lrange("logs", 0, -1).await.unwrap_or_default();
+        if logs.is_empty() {
+            continue;
+        }
 
-            let mut docs = Vec::new();
-            for log in logs {
-                match serde_json::from_str::<LogEntry>(&log) {
-                    Ok(entry) => docs.push(entry),
-                    Err(e) => {
-                        eprintln!("Error parsing JSON log: {:?}", e);
-                        continue;
-                    }
+        // Remove logs from Redis database
+        if let Err(e) = redis_conn.del::<_, ()>("logs").await {
+            eprintln!("Error deleting from Redis: {:?}", e);
+        }
+
+        let mut docs = Vec::new();
+        for log in logs {
+            match serde_json::from_str::<LogEntry>(&log) {
+                Ok(entry) => docs.push(entry),
+                Err(e) => {
+                    eprintln!("Error parsing JSON log: {:?}", e);
+                    continue;
                 }
             }
-
-            if docs.is_empty() {
-                continue;
-            }
-
-            // Insert logs into MongoDB database
-            if let Err(e) = collection.insert_many(docs, None).await {
-                eprintln!("Error from Mongo: {:?}", e);
-            }
         }
-    });
 
-    Ok(())
+        if docs.is_empty() {
+            continue;
+        }
+
+        // Insert logs into MongoDB database
+        if let Err(e) = collection.insert_many(&docs, None).await {
+            eprintln!("Error from Mongo: {:?}", e);
+        }
+
+        let now = Local::now(); // ou Utc::now() pour UTC
+        let formatted = now.format("%Y-%m-%d %H:%M:%S").to_string();
+
+        println!("{} : {} log(s) inserted into MongoDB.", formatted, docs.len());
+    }
 }

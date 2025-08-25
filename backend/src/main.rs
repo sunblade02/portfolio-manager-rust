@@ -10,8 +10,6 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     #[cfg(not(test))]
     log::setup_logging().await?;
-    #[cfg(not(test))]
-    log::start_log_flusher().await?;
 
     let pool = db::connect_db().await?;
 

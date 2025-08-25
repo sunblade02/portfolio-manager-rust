@@ -26,7 +26,7 @@ create-db-test:
 test-backend:
 	docker compose up -d
 	docker run --rm --network portfolio-manager-rust_default -v $(PWD)/backend:/app -w /app rust bash -c "\
-		cargo run --bin migrate --no-default-features --features migrate test && \
+		cargo run --bin migrate && \
 		cargo test -- --test-threads=1"
 
 test-frontend:

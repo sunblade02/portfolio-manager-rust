@@ -3,9 +3,6 @@ name = "portfolio_manager"
 version = "0.1.0"
 edition = "2024"
 
-[features]
-migrate = []
-
 [dependencies]
 axum = "0.8"
 axum-server = { version = "0.7", features = ["tls-rustls"] }
